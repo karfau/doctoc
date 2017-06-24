@@ -2,7 +2,7 @@
   "author": "Thorsten Lorenz <thlorenz@gmx.de> (thlorenz.com), Christian Bewernitz <coder@karfau.de>",
   "name": "doctoc-explicit",
   "description": "Generates TOC for markdown files of local git repo.",
-  "version": "2.0.0",
+  "version": "2.0.0-alpha",
   "repository": {
     "type": "git",
     "url": "git://github.com/karfau/doctoc.git"
