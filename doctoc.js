@@ -36,9 +36,11 @@ function transformAndSave(files, mode, maxHeaderLevel, title, notitle, entryPref
     })
   }
 
-  unchanged.forEach(function (x) {
-    console.log('"%s" is up to date', x.path);
-  });
+  if (!explicit) {
+    unchanged.forEach(function (x) {
+      console.log('"%s" is up to date', x.path);
+    });
+  }
 
   changed.forEach(function (x) { 
     if (stdOut) {
