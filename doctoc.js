@@ -16,13 +16,13 @@ function cleanPath(path) {
   return homeExpanded.replace(/\s/g, '\\ ');
 }
 
-function transformAndSave(files, mode, maxHeaderLevel, title, notitle, entryPrefix, stdOut, explicit) {
+function transformAndSave(files, mode, maxHeaderLevel, title, notitle, entryPrefix, stdOut, all) {
   console.log('\n==================\n');
 
   var transformed = files
     .map(function (x) {
       var content = fs.readFileSync(x.path, 'utf8')
-        , result = transform(content, mode, maxHeaderLevel, title, notitle, entryPrefix, explicit);
+        , result = transform(content, mode, maxHeaderLevel, title, notitle, entryPrefix, !all);
       result.path = x.path;
       return result;
     });
@@ -36,7 +36,7 @@ function transformAndSave(files, mode, maxHeaderLevel, title, notitle, entryPref
     })
   }
 
-  if (!explicit) {
+  if (all) {
     unchanged.forEach(function (x) {
       console.log('"%s" is up to date', x.path);
     });
@@ -77,7 +77,7 @@ var modes = {
 var mode = modes['github'];
 
 var argv = minimist(process.argv.slice(2)
-    , { boolean: [ 'h', 'help', 'T', 'notitle', 's', 'stdout', 'e', 'explicit'].concat(Object.keys(modes))
+    , { boolean: [ 'h', 'help', 'T', 'notitle', 's', 'stdout', 'a', 'all'].concat(Object.keys(modes))
     , string: [ 'title', 't', 'maxlevel', 'm', 'entryprefix' ]
     , unknown: function(a) { return (a[0] == '-' ? (console.error('Unknown option(s): ' + a), printUsageAndExit(true)) : true); }
     });
@@ -96,7 +96,7 @@ var title = argv.t || argv.title;
 var notitle = argv.T || argv.notitle;
 var entryPrefix = argv.entryprefix || '-';
 var stdOut = argv.s || argv.stdout
-var explicit = argv.e || argv.explicit
+var all = argv.a || argv.all
 
 var maxHeaderLevel = argv.m || argv.maxlevel;
 if (maxHeaderLevel && isNaN(maxHeaderLevel) || maxHeaderLevel < 0) { console.error('Max. heading level specified is not a positive number: ' + maxHeaderLevel), printUsageAndExit(true); }
@@ -113,7 +113,7 @@ for (var i = 0; i < argv._.length; i++) {
     files = [{ path: target }];
   }
 
-  transformAndSave(files, mode, maxHeaderLevel, title, notitle, entryPrefix, stdOut, explicit);
+  transformAndSave(files, mode, maxHeaderLevel, title, notitle, entryPrefix, stdOut, all);
 
   console.log('\nEverything is OK.');
 }
