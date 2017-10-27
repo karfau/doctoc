@@ -70,6 +70,13 @@ specified](#using-doctoc-to-generate-links-compatible-with-other-sites).
 
 If you already have a TOC inserted by doctoc, it will automatically be updated by running the command (rather than inserting a duplicate toc). Doctoc locates the TOC by the `<!-- START doctoc -->` and `<!-- END doctoc -->` comments, so you can also move a generated TOC to any other portion of your document and it will be updated there.
 
+To **only update** those files that **already** have a TOC (including those that [specify location of toc](#specifying-location-of-toc)),
+you can run 
+
+    doctoc . --explicit
+
+The `--explicit` prevents doctoc from changing files that are not yet "under the control" of doctoc.
+
 ### Adding toc to individual files
 
 If you want to convert only specific files, do:
